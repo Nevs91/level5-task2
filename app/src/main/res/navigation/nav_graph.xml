@@ -13,7 +13,7 @@
 
         <action
             android:id="@+id/action_gameBacklogFragment_to_addGameFragment"
-            app:destination="@id/addNoteFragment" />
+            app:destination="@id/addGameFragment" />
     </fragment>
 
     <fragment
