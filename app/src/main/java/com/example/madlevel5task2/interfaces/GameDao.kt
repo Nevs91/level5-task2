@@ -14,8 +14,11 @@ interface GameDao {
     @Insert
     suspend fun insertGame(game: Game)
 
-    @Query("SELECT * FROM gameTable LIMIT 1")
+    @Query("SELECT * FROM gameTable")
     fun getAllGames(): LiveData<Game?>
+
+    @Query("SELECT COUNT(*) FROM gameTable WHERE id = :gameId")
+    suspend fun getGameById(gameId: Long): LiveData<Game?>
 
     @Update
     suspend fun updateGame(note: Game)
