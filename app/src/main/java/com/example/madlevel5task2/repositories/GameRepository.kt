@@ -23,13 +23,6 @@ class GameRepository(context: Context) {
     }
 
     /**
-     * Get a specific game from the database by ID
-     */
-    suspend fun getGameById(gameId: Long) {
-        gameDao.getGameById(gameId)
-    }
-
-    /**
      * Update or insert a (new) game based on the provided game object
      */
     suspend fun updateGame(game: Game) {
