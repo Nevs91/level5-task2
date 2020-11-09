@@ -3,26 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/gameBacklogFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/gameBacklogFragment"
         android:name="com.example.madlevel5task2.GameBacklogFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:label="fragment_gameBacklog"
+        tools:layout="@layout/fragment_game_backlog" >
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_gameBacklogFragment_to_addGameFragment"
+            app:destination="@id/addNoteFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/addGameFragment"
         android:name="com.example.madlevel5task2.AddGameFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:label="fragment_add_game"
+        tools:layout="@layout/fragment_add_game" />
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
 </navigation>
