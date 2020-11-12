@@ -16,7 +16,4 @@ interface GameDao {
 
     @Query("SELECT * FROM gameTable")
     fun getAllGames(): LiveData<List<Game>>
-
-    @Update
-    suspend fun updateGame(note: Game)
 }

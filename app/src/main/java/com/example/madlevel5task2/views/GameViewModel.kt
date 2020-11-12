@@ -21,22 +21,24 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val error = MutableLiveData<String>()
     val success = MutableLiveData<Boolean>()
 
-    fun updateGame(gameId: Long?, title: String, platform: String, releaseDate: Date) {
+    fun saveGame(title: String, platform: String, releaseDay: Int, releaseMonth: Int, releaseYear: Int) {
 
-        //game = gameRepository.
+        val cal = Calendar.getInstance()
+        cal[Calendar.YEAR] = releaseYear
+        cal[Calendar.MONTH] = releaseMonth
+        cal[Calendar.DAY_OF_MONTH] = releaseDay
+        val releaseDate = cal.time
 
-        //if there is an existing note, take that id to update it instead of adding a new one
         val newGame = Game(
-            id = gameId,
-            title = title,
-            platform = platform,
-            releaseDate = releaseDate,
+                title = title,
+                platform = platform,
+                releaseDate = releaseDate,
         )
 
         if(isGameValid(newGame)) {
             mainScope.launch {
                 withContext(Dispatchers.IO) {
-                    gameRepository.updateGame(newGame)
+                    gameRepository.insertGame(newGame)
                 }
                 success.value = true
             }

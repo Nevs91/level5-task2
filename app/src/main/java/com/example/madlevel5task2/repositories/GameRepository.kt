@@ -23,9 +23,9 @@ class GameRepository(context: Context) {
     }
 
     /**
-     * Update or insert a (new) game based on the provided game object
+     * Insert and store a game in the database
      */
-    suspend fun updateGame(game: Game) {
-        gameDao.updateGame(game)
+    suspend fun insertGame(game: Game) {
+        gameDao.insertGame(game)
     }
 }
