@@ -36,8 +36,10 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in arrayOf(R.id.addGameFragment)) {
                 fab.hide()
+                fabSaveGame.show()
             } else {
                 fab.show()
+                fabSaveGame.hide()
             }
         }
     }
