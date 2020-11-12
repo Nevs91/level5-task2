@@ -47,6 +47,7 @@
                 android:orientation="horizontal">
 
                 <EditText android:layout_width="fill_parent"
+                    android:id="@+id/etReleaseDay"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autofillHints="Day"
@@ -54,6 +55,7 @@
                     android:inputType="number" />
 
                 <EditText android:layout_width="fill_parent"
+                    android:id="@+id/etReleaseMonth"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autofillHints="Month"
@@ -61,6 +63,7 @@
                     android:inputType="number"/>
 
                 <EditText android:layout_width="fill_parent"
+                    android:id="@+id/etReleaseYear"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:autofillHints="Year"
