@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.madlevel5task2.adapters.GameBacklogAdapter
@@ -83,7 +84,7 @@ class GameBacklogFragment : Fragment() {
         gameBacklogAdapter = GameBacklogAdapter(games)
         viewManager = LinearLayoutManager(activity)
 
-        //createItemTouchHelper().attachToRecyclerView(rvGames)
+        createItemTouchHelper().attachToRecyclerView(rvGames)
 
         rvGames.apply {
             setHasFixedSize(true)
@@ -117,11 +118,50 @@ class GameBacklogFragment : Fragment() {
 
         // When the undo button is pressed, insert all games from the copy to the database
         viewModel.success.observe(viewLifecycleOwner, {
-            Snackbar.make(requireActivity().findViewById(android.R.id.content), "Text label", Snackbar.LENGTH_LONG)
+            Snackbar.make(requireActivity().findViewById(R.id.mainActivity), "Successfully deleted backlog", Snackbar.LENGTH_LONG)
                     .setAction("Undo") {
                         viewModel.saveGameList(gameListCopy)
                     }
                     .show()
         })
+    }
+
+    /**
+     * Create a touch helper to recognize when a user swipes an item from a recycler view.
+     * An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
+     * and uses callbacks to signal when a user is performing these actions.
+     */
+    private fun createItemTouchHelper(): ItemTouchHelper {
+        // Callback which is used to create the ItemTouch helper.
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            // Disable the ability to move items up and down.
+            override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            // Callback triggered when a user swiped an item.
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val gameToDelete = games[position]
+
+                // Remove the game from the database
+                viewModel.deleteGame(gameToDelete)
+
+                // When the undo button is pressed, insert the removed game back into the database
+                viewModel.success.observe(viewLifecycleOwner, {
+                    Snackbar.make(requireActivity().findViewById(R.id.mainActivity), "Successfully deleted game", Snackbar.LENGTH_LONG)
+                            .setAction("Undo") {
+                                viewModel.saveGame(gameToDelete, false)
+                            }
+                            .show()
+                })
+            }
+        }
+        return ItemTouchHelper(callback)
     }
 }

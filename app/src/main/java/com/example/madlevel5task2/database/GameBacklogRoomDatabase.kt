@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.madlevel5task2.interfaces.GameDao
+import com.example.madlevel5task2.interfaces.GameBacklogDao
 import com.example.madlevel5task2.models.Game
 import com.example.madlevel5task2.typeConverters.Converters
 
@@ -13,7 +13,7 @@ import com.example.madlevel5task2.typeConverters.Converters
 @TypeConverters(Converters::class)
 abstract class GameBacklogRoomDatabase : RoomDatabase() {
 
-    abstract fun gameDao(): GameDao
+    abstract fun gameDao(): GameBacklogDao
 
     companion object {
         private const val DATABASE_NAME = "GAME_BACKLOG_DATABASE"

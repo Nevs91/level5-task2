@@ -24,7 +24,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Create and save a new game with the provided information to the database
      */
-    fun saveGame(title: String, platform: String, releaseDay: Int, releaseMonth: Int, releaseYear: Int) {
+    fun createAndSaveGame(title: String, platform: String, releaseDay: Int, releaseMonth: Int, releaseYear: Int) {
 
         val cal = Calendar.getInstance()
         cal[Calendar.YEAR] = releaseYear
@@ -38,26 +38,23 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                 releaseDate = releaseDate,
         )
 
-        if(isGameValid(newGame)) {
-            mainScope.launch {
-                withContext(Dispatchers.IO) {
-                    gameRepository.insertGame(newGame)
-                }
-                success.value = true
-            }
-        }
+        // Save the created game instance with success feedback
+        saveGame(newGame, true)
     }
 
     /**
-     * Delete all games from the database
+     * Check if the provided game instance is valid and store (when valid) to the database
      */
-    fun deleteAllGames() {
-        if (gamesCanBeDeleted()) {
+    fun saveGame(game: Game, withSuccessStatus: Boolean) {
+        if(isGameValid(game)) {
             mainScope.launch {
                 withContext(Dispatchers.IO) {
-                    gameRepository.deleteAllGames()
+                    gameRepository.insertGame(game)
                 }
-                success.value = true
+
+                if (withSuccessStatus) {
+                    success.value = true
+                }
             }
         }
     }
@@ -71,6 +68,32 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                 games.forEach { game: Game ->
                     gameRepository.insertGame(game)
                 }
+            }
+        }
+    }
+
+    /**
+     * Delete the provided game instance
+     */
+    fun deleteGame(game: Game) {
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                gameRepository.deleteGame(game)
+            }
+            success.value = true
+        }
+    }
+
+    /**
+     * Delete all games from the database
+     */
+    fun deleteAllGames() {
+        if (gamesCanBeDeleted()) {
+            mainScope.launch {
+                withContext(Dispatchers.IO) {
+                    gameRepository.deleteAllGames()
+                }
+                success.value = true
             }
         }
     }

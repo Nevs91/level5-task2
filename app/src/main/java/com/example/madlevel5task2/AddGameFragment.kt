@@ -1,6 +1,5 @@
 package com.example.madlevel5task2
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -87,7 +86,7 @@ class AddGameFragment : Fragment() {
     }
 
     private fun saveGameInGameBacklog() {
-        viewModel.saveGame(
+        viewModel.createAndSaveGame(
                 etTitle?.text.toString(),
                 etPlatform?.text.toString(),
                 etReleaseDay?.text.toString().toInt(),

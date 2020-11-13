@@ -17,4 +17,6 @@
     <string name="hintMonth">Month</string>
     <string name="hintYear">Year</string>
     <string name="action_clear_backlog">Clear game backlog</string>
+    <string name="contentDescriptionCreateGame">Create new game backlog items</string>
+    <string name="contentDescriptionSaveGame">Save game</string>
 </resources>
