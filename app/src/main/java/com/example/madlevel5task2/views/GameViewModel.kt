@@ -10,9 +10,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class GameViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
 
     private val gameRepository =  GameRepository(application.applicationContext)
     private val mainScope = CoroutineScope(Dispatchers.Main)
@@ -24,22 +28,18 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Create and save a new game with the provided information to the database
      */
-    fun createAndSaveGame(title: String, platform: String, releaseDay: Int, releaseMonth: Int, releaseYear: Int) {
+    fun createAndSaveGame(title: String, platform: String, dateString: String) {
+        // Check if the dateString can construct a valid date before creating a new game instance
+        if (isValidDateString(dateString)) {
+            val newGame = Game(
+                    title = title,
+                    platform = platform,
+                    releaseDate = dateFormat.parse(dateString)!!,
+            )
 
-        val cal = Calendar.getInstance()
-        cal[Calendar.YEAR] = releaseYear
-        cal[Calendar.MONTH] = releaseMonth
-        cal[Calendar.DAY_OF_MONTH] = releaseDay
-        val releaseDate = cal.time
-
-        val newGame = Game(
-                title = title,
-                platform = platform,
-                releaseDate = releaseDate,
-        )
-
-        // Save the created game instance with success feedback
-        saveGame(newGame, true)
+            // Save the created game instance with success feedback
+            saveGame(newGame, true)
+        }
     }
 
     /**
@@ -99,16 +99,32 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * Check if the provided string can be parsed into a valid date
+     */
+    private fun isValidDateString(dateString: String): Boolean {
+        dateFormat.isLenient = false
+
+        try {
+            dateFormat.parse(dateString)
+        } catch (pe: ParseException) {
+            error.value = "Please fill in a valid date"
+            return false
+        }
+
+        return true
+    }
+
+    /**
      * Check if the properties of the provided game instance are valid
      */
     private fun isGameValid(game: Game): Boolean {
         return when {
             game.title.isBlank() -> {
-                error.value = "Title must not be empty"
+                error.value = "Please fill in a title"
                 false
             }
             game.platform.isBlank() -> {
-                error.value = "Platform must not be empty"
+                error.value = "Please fill in a platform"
                 false
             }
             else -> true

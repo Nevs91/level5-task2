@@ -89,9 +89,11 @@ class AddGameFragment : Fragment() {
         viewModel.createAndSaveGame(
                 etTitle?.text.toString(),
                 etPlatform?.text.toString(),
-                etReleaseDay?.text.toString().toInt(),
-                etReleaseMonth?.text.toString().toInt(),
-                etReleaseYear?.text.toString().toInt(),
+                String.format("%s-%s-%s",
+                        etReleaseDay?.text.toString(),
+                        etReleaseMonth?.text.toString(),
+                        etReleaseYear?.text.toString()
+                )
         )
     }
 }
