@@ -1,8 +1,6 @@
 package com.example.madlevel5task2
 
-import android.app.ActionBar
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.madlevel5task2.adapters.GameBacklogAdapter
 import com.example.madlevel5task2.models.Game
 import com.example.madlevel5task2.views.GameViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_game_backlog.*
 
 
@@ -115,7 +114,11 @@ class GameBacklogFragment : Fragment() {
         })
 
         viewModel.success.observe(viewLifecycleOwner, {
-            Toast.makeText(activity, "Success!", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireActivity().findViewById(android.R.id.content), "Text label", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") {
+                       // Undo method
+                    }
+                    .show()
         })
     }
 }
