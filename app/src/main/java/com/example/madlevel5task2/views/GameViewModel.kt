@@ -45,6 +45,17 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun deleteAllGames() {
+        if (gamesCanBeDeleted()) {
+            mainScope.launch {
+                withContext(Dispatchers.IO) {
+                    gameRepository.deleteAllGames()
+                }
+                success.value = true
+            }
+        }
+    }
+
     private fun isGameValid(game: Game): Boolean {
         return when {
             game.title.isBlank() -> {
@@ -53,6 +64,16 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             }
             game.platform.isBlank() -> {
                 error.value = "Platform must not be empty"
+                false
+            }
+            else -> true
+        }
+    }
+
+    private fun gamesCanBeDeleted(): Boolean {
+        return when {
+            games.value.isNullOrEmpty() -> {
+                error.value = "There are no games in the backlog to remove"
                 false
             }
             else -> true
