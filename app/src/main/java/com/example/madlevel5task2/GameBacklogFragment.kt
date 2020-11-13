@@ -56,7 +56,7 @@ class GameBacklogFragment : Fragment() {
     private fun observeAddGameResult() {
         viewModel.games.observe(viewLifecycleOwner, { games ->
             this@GameBacklogFragment.games.clear()
-            this@GameBacklogFragment.games.addAll(games)
+            this@GameBacklogFragment.games.addAll(games.sortedBy { it.releaseDate })
             gameBacklogAdapter.notifyDataSetChanged()
         })
     }
