@@ -8,7 +8,7 @@ import com.example.madlevel5task2.R
 import com.example.madlevel5task2.models.Game
 import kotlinx.android.synthetic.main.item_game.view.*
 
-class GameBacklogAdapter(private val games: List<Game>) : RecyclerView.Adapter<GameBacklogAdapter.ViewHolder>(){
+class GameBacklogAdapter(private var games: List<Game>) : RecyclerView.Adapter<GameBacklogAdapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun databind(game: Game) {
@@ -23,7 +23,7 @@ class GameBacklogAdapter(private val games: List<Game>) : RecyclerView.Adapter<G
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_game, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.item_game, parent, false)
         )
     }
 

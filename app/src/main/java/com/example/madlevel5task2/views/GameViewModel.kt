@@ -21,6 +21,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val error = MutableLiveData<String>()
     val success = MutableLiveData<Boolean>()
 
+    /**
+     * Create and save a new game with the provided information to the database
+     */
     fun saveGame(title: String, platform: String, releaseDay: Int, releaseMonth: Int, releaseYear: Int) {
 
         val cal = Calendar.getInstance()
@@ -45,6 +48,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Delete all games from the database
+     */
     fun deleteAllGames() {
         if (gamesCanBeDeleted()) {
             mainScope.launch {
@@ -56,6 +62,22 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Store each item from the provided list in the database
+     */
+    fun saveGameList(games: ArrayList<Game>) {
+        mainScope.launch {
+            withContext(Dispatchers.IO) {
+                games.forEach { game: Game ->
+                    gameRepository.insertGame(game)
+                }
+            }
+        }
+    }
+
+    /**
+     * Check if the properties of the provided game instance are valid
+     */
     private fun isGameValid(game: Game): Boolean {
         return when {
             game.title.isBlank() -> {
@@ -70,6 +92,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Check if there are games to be removed
+     */
     private fun gamesCanBeDeleted(): Boolean {
         return when {
             games.value.isNullOrEmpty() -> {

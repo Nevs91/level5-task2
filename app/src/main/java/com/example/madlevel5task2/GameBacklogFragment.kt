@@ -107,16 +107,19 @@ class GameBacklogFragment : Fragment() {
      * Remove all stored match results in the database and re-populate the recyclerView
      */
     private fun clearGameBacklog() {
+        val gameListCopy: ArrayList<Game> = ArrayList(games)
+
         viewModel.deleteAllGames()
 
         viewModel.error.observe(viewLifecycleOwner, { message ->
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
         })
 
+        // When the undo button is pressed, insert all games from the copy to the database
         viewModel.success.observe(viewLifecycleOwner, {
             Snackbar.make(requireActivity().findViewById(android.R.id.content), "Text label", Snackbar.LENGTH_LONG)
                     .setAction("Undo") {
-                       // Undo method
+                        viewModel.saveGameList(gameListCopy)
                     }
                     .show()
         })
