@@ -48,7 +48,7 @@ class AddGameFragment : Fragment() {
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_add_note, menu)
+        inflater.inflate(R.menu.menu_add_game, menu)
 
         val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
 
